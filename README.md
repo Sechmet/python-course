@@ -4,6 +4,10 @@
 
 https://youtu.be/qwAFL1597eM?si=X4dTrtDNAlJHQf1L
 
+```
+.\venv\Scripts\Activate.ps1
+```
+
 ---
 
 ### Author Links
