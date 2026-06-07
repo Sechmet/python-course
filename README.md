@@ -8,6 +8,10 @@ https://youtu.be/qwAFL1597eM?si=X4dTrtDNAlJHQf1L
 .\venv\Scripts\Activate.ps1
 ```
 
+```
+python .\lesson03\meaning.py
+```
+
 ---
 
 ### Author Links
