@@ -22,4 +22,4 @@ elif TEMPERATURE >= 25:
 else:
     weather = "bad"
 
-print(f"{weather}")
+print(f"weather: {weather}")
