@@ -1,10 +1,28 @@
+# Copyright 2026 Irene Hofstetter
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import unittest
+import sys
+
+sys.path.insert(0, ".")
+from dummies.ranges import divisible_in_range, first_odd_numbers
 
 
 class TestDivisibleByFour(unittest.TestCase):
 
     def setUp(self):
-        self.result = [num for num in range(30, 81) if num % 4 == 0]
+        self.result = divisible_in_range(30, 80, 4)
 
     def test_result_is_list(self):
         self.assertIsInstance(self.result, list)
@@ -35,13 +53,7 @@ class TestDivisibleByFour(unittest.TestCase):
 class TestFirst8OddNumbers(unittest.TestCase):
 
     def setUp(self):
-        result = []
-        num = 15
-        while len(result) < 8:
-            if num % 2 != 0:
-                result.append(num)
-            num += 1
-        self.result = result
+        self.result = first_odd_numbers(15, 8)
 
     def test_result_is_list(self):
         self.assertIsInstance(self.result, list)
@@ -61,55 +73,42 @@ class TestFirst8OddNumbers(unittest.TestCase):
         self.assertEqual(self.result, expected)
 
 
-class TestWeirdInput(unittest.TestCase):
+class TestDivisibleInRangeValidation(unittest.TestCase):
 
-    def test_empty_range_returns_no_divisible_numbers(self):
-        result = [num for num in range(0, 0) if num % 4 == 0]
-        self.assertEqual(result, [])
+    def test_start_not_int_raises(self):
+        with self.assertRaises(AssertionError):
+            divisible_in_range(1.5, 80, 4)
 
-    def test_negative_numbers_divisible_by_4(self):
-        result = [num for num in range(-20, -1) if num % 4 == 0]
-        self.assertEqual(result, [-20, -16, -12, -8, -4])
+    def test_stop_not_int_raises(self):
+        with self.assertRaises(AssertionError):
+            divisible_in_range(30, "80", 4)
 
-    def test_range_with_no_divisible_by_4(self):
-        result = [num for num in range(33, 36) if num % 4 == 0]
-        self.assertEqual(result, [])
+    def test_divisor_not_int_raises(self):
+        with self.assertRaises(AssertionError):
+            divisible_in_range(30, 80, 2.0)
 
-    def test_single_number_range_divisible_by_4(self):
-        result = [num for num in range(32, 33) if num % 4 == 0]
-        self.assertEqual(result, [32])
+    def test_divisor_zero_raises(self):
+        with self.assertRaises(AssertionError):
+            divisible_in_range(30, 80, 0)
 
-    def test_single_number_range_not_divisible_by_4(self):
-        result = [num for num in range(33, 34) if num % 4 == 0]
-        self.assertEqual(result, [])
+    def test_start_greater_than_stop_raises(self):
+        with self.assertRaises(AssertionError):
+            divisible_in_range(80, 30, 4)
 
-    def test_odd_numbers_starting_from_zero(self):
-        result = []
-        num = 0
-        while len(result) < 8:
-            if num % 2 != 0:
-                result.append(num)
-            num += 1
-        self.assertEqual(result[0], 1)
-        self.assertEqual(len(result), 8)
 
-    def test_odd_numbers_starting_from_negative(self):
-        result = []
-        num = -10
-        while len(result) < 8:
-            if num % 2 != 0:
-                result.append(num)
-            num += 1
-        self.assertEqual(result, [-9, -7, -5, -3, -1, 1, 3, 5])
+class TestFirstOddNumbersValidation(unittest.TestCase):
 
-    def test_zero_odd_numbers_requested(self):
-        result = []
-        num = 15
-        while len(result) < 0:
-            if num % 2 != 0:
-                result.append(num)
-            num += 1
-        self.assertEqual(result, [])
+    def test_start_not_int_raises(self):
+        with self.assertRaises(AssertionError):
+            first_odd_numbers(1.5, 8)
+
+    def test_count_not_int_raises(self):
+        with self.assertRaises(AssertionError):
+            first_odd_numbers(15, "8")
+
+    def test_negative_count_raises(self):
+        with self.assertRaises(AssertionError):
+            first_odd_numbers(15, -1)
 
 
 if __name__ == "__main__":
